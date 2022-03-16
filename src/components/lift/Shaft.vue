@@ -1,15 +1,28 @@
 <template>
-  <div class="border-2 border-gray-400 w-32 flex flex-col-reverse">
+  <div class="border-r-2 border-l-2 border-gray-400 w-32 flex flex-col-reverse">
     <div
       class="bg-blue-600 h-32 transition-all ease-linear"
       :style="cabinPosition"
       :class="{ 'cabin-stop': isAnimate }"
-    ></div>
+    >
+      <div v-if="isMoving" class="flex justify-center">
+        <div
+          class="flex justify-center bg-gray-400 w-1/2 opacity-70 rounded-sm"
+        >
+          <arrow-up v-if="isMovingUp" />
+          <arrow-down v-else />
+          <p class="text-white">{{ stage }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import ArrowDown from "../icons/ArrowDown.vue";
+import ArrowUp from "../icons/ArrowUp.vue";
 export default {
+  components: { ArrowUp, ArrowDown },
   props: {
     callStage: {
       type: Number,
@@ -23,6 +36,7 @@ export default {
       stage: this.callStage,
       //Движение лифта
       isMoving: false,
+      isMovingUp: false,
       //Моргание лифта
       isAnimate: false,
       timer: 1,
@@ -37,9 +51,14 @@ export default {
     },
   },
   watch: {
-    callStage(stage) {
-      if (!this.stackStages.includes(stage)) {
-        this.stackStages.push(stage);
+    callStage(newStage, oldStage) {
+      if (!this.stackStages.includes(newStage)) {
+        if (newStage > oldStage) {
+          this.isMovingUp = true;
+        } else {
+          this.isMovingUp = false;
+        }
+        this.stackStages.push(newStage);
         this.moveToStage();
       }
     },
@@ -61,7 +80,7 @@ export default {
       setTimeout(() => {
         this.isMoving = false;
         this.isAnimate = true;
-
+        //После 3 секунды отдыха
         setTimeout(() => {
           this.moveToStage();
         }, 3000);
