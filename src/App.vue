@@ -1,8 +1,16 @@
 <template>
   <div id="app" class="relative">
-    <Shaft class="absolute left-10 top-0 right-0 bottom-0" />
+    <Shaft
+      class="absolute left-10 top-0 right-0 bottom-0"
+      :callStage="callStage"
+    />
     <div class="mt-2 flex flex-col-reverse">
-      <Stages v-for="stage in stages" :key="stage.id" :stage="stage" />
+      <Stages
+        v-for="stage in stages"
+        :key="stage.id"
+        :stage="stage"
+        @stage="getStage"
+      />
     </div>
   </div>
 </template>
@@ -22,7 +30,13 @@ export default {
         { id: 4, number: 4 },
         { id: 5, number: 5 },
       ],
+      callStage: 1,
     };
+  },
+  methods: {
+    getStage(val) {
+      this.callStage = val;
+    },
   },
 };
 </script>

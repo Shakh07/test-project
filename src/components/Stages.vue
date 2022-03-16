@@ -1,6 +1,6 @@
 <template>
   <div class="border h-32">
-    <div class="relative left-60 flex flex-col gap-y-2">
+    <div class="relative left-48 flex flex-col gap-y-2">
       <p>{{ stage.number }}</p>
       <div
         @click="isClicked = true"
@@ -8,6 +8,7 @@
         :class="{ isClicked: isClicked }"
       >
         <div
+          @click="setStage()"
           class="border border-blue-700 w-5 flex justify-center p-1 rounded-full"
           :class="{ isClicked: isClicked }"
         >
@@ -36,6 +37,11 @@ export default {
     return {
       isClicked: false,
     };
+  },
+  methods: {
+    setStage() {
+      this.$emit("stage", this.stage.number);
+    },
   },
 };
 </script>
