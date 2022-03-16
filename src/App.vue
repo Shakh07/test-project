@@ -1,14 +1,18 @@
 <template>
-  <div id="app" class="mt-2">
-    <Stages v-for="stage in stages" :key="stage.id" :stage="stage" />
+  <div id="app" class="relative">
+    <LiftShaft class="absolute left-10 top-0 right-0 bottom-0" />
+    <div class="mt-2 flex flex-col-reverse">
+      <Stages v-for="stage in stages" :key="stage.id" :stage="stage" />
+    </div>
   </div>
 </template>
 
 <script>
 import Stages from "./components/Stages.vue";
+import LiftShaft from "./components/lift/LiftShaft.vue";
 export default {
   name: "App",
-  components: { Stages },
+  components: { Stages, LiftShaft },
   data() {
     return {
       stages: [
