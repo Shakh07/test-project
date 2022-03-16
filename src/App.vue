@@ -31,6 +31,7 @@ export default {
         { id: 5, number: 5 },
       ],
       callStage: 1,
+      callFromStages: [1],
     };
   },
   methods: {

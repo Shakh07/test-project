@@ -1,13 +1,15 @@
 <template>
   <div class="border-2 border-gray-400 w-32 flex flex-col-reverse">
-    <Cabin :style="cabinPosition" :class="{ 'cabin-stop': isCabinStoped }" />
+    <div
+      class="bg-blue-600 h-32 transition-all ease-linear"
+      :style="cabinPosition"
+      :class="{ 'cabin-stop': isAnimate }"
+    ></div>
   </div>
 </template>
 
 <script>
-import Cabin from "./Cabin.vue";
 export default {
-  components: { Cabin },
   props: {
     callStage: {
       type: Number,
@@ -16,22 +18,54 @@ export default {
   },
   data() {
     return {
-      isCabinStoped: false,
+      //кол-вызовов ии разных этажей
+      stackStages: [],
+      stage: this.callStage,
+      //Движение лифта
+      isMoving: false,
+      //Моргание лифта
+      isAnimate: false,
+      timer: 1,
     };
   },
   computed: {
     cabinPosition() {
       return {
-        "margin-bottom": 128 * this.callStage - 128 + "px",
+        "margin-bottom": 128 * this.stage - 128 + "px",
+        "transition-duration": this.timer + "s",
       };
     },
   },
   watch: {
-    callStage() {
+    callStage(stage) {
+      if (!this.stackStages.includes(stage)) {
+        this.stackStages.push(stage);
+        this.moveToStage();
+      }
+    },
+  },
+  methods: {
+    moveToStage() {
+      //если нет очереди вызовов или лифт не движется
+      if (!this.stackStages.length || this.isMoving) {
+        return;
+      }
+      //удаление из очереди
+      const currentStage = this.stackStages.shift();
+      //таймер движения этажа
+      this.timer = Math.abs(this.stage - currentStage);
+      this.stage = currentStage;
+      this.isMoving = true;
+      this.isAnimate = false;
+
       setTimeout(() => {
-        this.isCabinStoped = true;
-      }, 3000);
-      this.isCabinStoped = false;
+        this.isMoving = false;
+        this.isAnimate = true;
+
+        setTimeout(() => {
+          this.moveToStage();
+        }, 3000);
+      }, this.timer * 1000);
     },
   },
 };
@@ -42,7 +76,7 @@ export default {
   animation-name: cabin;
   animation-iteration-count: 3;
   animation-timing-function: linear;
-  animation-duration: 1.5s;
+  animation-duration: 1s;
 }
 @keyframes cabin {
   from {
