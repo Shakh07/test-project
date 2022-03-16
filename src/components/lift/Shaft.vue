@@ -51,13 +51,8 @@ export default {
     },
   },
   watch: {
-    callStage(newStage, oldStage) {
+    callStage(newStage) {
       if (!this.stackStages.includes(newStage)) {
-        if (newStage > oldStage) {
-          this.isMovingUp = true;
-        } else {
-          this.isMovingUp = false;
-        }
         this.stackStages.push(newStage);
         this.moveToStage();
       }
@@ -66,22 +61,24 @@ export default {
   methods: {
     moveToStage() {
       //если нет очереди вызовов или лифт не движется
-      if (!this.stackStages.length || this.isMoving) {
+      if (!this.stackStages.length || this.isMoving || this.isAnimate) {
         return;
       }
       //удаление из очереди
-      const currentStage = this.stackStages.shift();
+      const nextStage = this.stackStages.shift();
       //таймер движения этажа
-      this.timer = Math.abs(this.stage - currentStage);
-      this.stage = currentStage;
+      this.timer = Math.abs(this.stage - nextStage);
+      this.isMovingUp = nextStage > this.stage;
+      this.stage = nextStage;
       this.isMoving = true;
-      this.isAnimate = false;
 
       setTimeout(() => {
         this.isMoving = false;
         this.isAnimate = true;
+        this.$emit("arrived", nextStage);
         //После 3 секунды отдыха
         setTimeout(() => {
+          this.isAnimate = false;
           this.moveToStage();
         }, 3000);
       }, this.timer * 1000);
