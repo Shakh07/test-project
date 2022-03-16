@@ -1,5 +1,5 @@
 <template>
-  <div class="border-2 border-gray-400 w-44"></div>
+  <div class="bg-blue-600 h-32"></div>
 </template>
 
 <script>

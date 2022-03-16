@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="relative">
-    <LiftShaft class="absolute left-10 top-0 right-0 bottom-0" />
+    <Shaft class="absolute left-10 top-0 right-0 bottom-0" />
     <div class="mt-2 flex flex-col-reverse">
       <Stages v-for="stage in stages" :key="stage.id" :stage="stage" />
     </div>
@@ -9,10 +9,10 @@
 
 <script>
 import Stages from "./components/Stages.vue";
-import LiftShaft from "./components/lift/LiftShaft.vue";
+import Shaft from "./components/lift/Shaft.vue";
 export default {
   name: "App",
-  components: { Stages, LiftShaft },
+  components: { Stages, Shaft },
   data() {
     return {
       stages: [
