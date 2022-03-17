@@ -40,7 +40,6 @@ export default {
       this.stages.find((el) => el.number === val).isClicked = true;
     },
     arrivedLift(val) {
-      console.log(val);
       this.stages.find((el) => el.number === val).isClicked = false;
     },
   },

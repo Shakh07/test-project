@@ -1,5 +1,7 @@
 <template>
-  <div class="border-r-2 border-l-2 border-gray-400 w-32 flex flex-col-reverse">
+  <div
+    class="border-r-2 border-l-2 border-t border-gray-400 w-32 flex flex-col-reverse"
+  >
     <div
       class="bg-blue-600 h-32 transition-all ease-linear"
       :style="cabinPosition"
@@ -31,11 +33,12 @@ export default {
   },
   data() {
     return {
-      //кол-вызовов ии разных этажей
+      //кол-вызовов из разных этажей
       stackStages: [],
       stage: this.callStage,
       //Движение лифта
       isMoving: false,
+      //направление движения
       isMovingUp: false,
       //Моргание лифта
       isAnimate: false,
@@ -58,20 +61,28 @@ export default {
       }
     },
   },
+  mounted() {
+    if (this.getFromLocalStorage("stackStages")) {
+      this.stackStages = this.getFromLocalStorage("stackStages");
+      this.moveToStage();
+    }
+  },
   methods: {
     moveToStage() {
       //если нет очереди вызовов или лифт не движется
       if (!this.stackStages.length || this.isMoving || this.isAnimate) {
         return;
       }
+      //Добавление вызовов и этажа в LocalStorage
+      this.addToLocalstorage("stackStages", this.stackStages);
       //удаление из очереди
       const nextStage = this.stackStages.shift();
       //таймер движения этажа
       this.timer = Math.abs(this.stage - nextStage);
-      this.isMovingUp = nextStage > this.stage;
+      this.isMovingUp = nextStage > this.stage; //направление движения
       this.stage = nextStage;
+      this.addToLocalstorage("stage", this.stage);
       this.isMoving = true;
-
       setTimeout(() => {
         this.isMoving = false;
         this.isAnimate = true;
@@ -82,6 +93,12 @@ export default {
           this.moveToStage();
         }, 3000);
       }, this.timer * 1000);
+    },
+    addToLocalstorage(name, item) {
+      localStorage.setItem(name, JSON.stringify(item));
+    },
+    getFromLocalStorage(name) {
+      return JSON.parse(localStorage.getItem(name));
     },
   },
 };
