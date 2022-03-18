@@ -62,10 +62,7 @@ export default {
     },
   },
   mounted() {
-    if (this.getFromLocalStorage("stackStages")) {
-      this.stackStages = this.getFromLocalStorage("stackStages");
-      this.moveToStage();
-    }
+    this.checkStackStages();
   },
   methods: {
     moveToStage() {
@@ -81,19 +78,26 @@ export default {
       this.timer = Math.abs(this.stage - nextStage);
       this.isMovingUp = nextStage > this.stage; //направление движения
       this.stage = nextStage;
-      this.addToLocalstorage("stage", this.stage);
       this.isMoving = true;
       setTimeout(() => {
         this.isMoving = false;
         this.isAnimate = true;
         //событие прибытия лифта
         this.$emit("arrived", nextStage);
+        this.addToLocalstorage("stage", this.stage);
         //После 3 секунды отдыха
         setTimeout(() => {
           this.isAnimate = false;
           this.moveToStage();
         }, 3000);
       }, this.timer * 1000);
+    },
+    //Проверка очереди после перезагрузки страницы
+    checkStackStages() {
+      if (this.getFromLocalStorage("stackStages")) {
+        this.stackStages = this.getFromLocalStorage("stackStages");
+        this.moveToStage();
+      }
     },
     addToLocalstorage(name, item) {
       localStorage.setItem(name, JSON.stringify(item));

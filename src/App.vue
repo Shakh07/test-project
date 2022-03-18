@@ -35,22 +35,28 @@ export default {
     };
   },
   mounted() {
-    //Проверка состояния кнопок вызова при обновлении страницы
-    if (JSON.parse(localStorage.getItem("stackStages"))) {
-      const calledStages = JSON.parse(localStorage.getItem("stackStages"));
-      calledStages.forEach((element) => {
-        this.stages.find((el) => el.number === element).isClicked = true;
-      });
-      console.log(calledStages);
-    }
+    this.checkLiftCallButtonState();
   },
   methods: {
     getStage(val) {
       this.callStage = val;
       this.stages.find((el) => el.number === val).isClicked = true;
+      const currentStage = JSON.parse(localStorage.getItem("stage"));
+      if (currentStage === this.callStage) {
+        this.arrivedLift(val);
+      }
     },
     arrivedLift(val) {
       this.stages.find((el) => el.number === val).isClicked = false;
+    },
+    //Проверка состояния кнопок вызова при обновлении страницы
+    checkLiftCallButtonState() {
+      if (JSON.parse(localStorage.getItem("stackStages"))) {
+        const calledStages = JSON.parse(localStorage.getItem("stackStages"));
+        calledStages.forEach((element) => {
+          this.stages.find((el) => el.number === element).isClicked = true;
+        });
+      }
     },
   },
 };
