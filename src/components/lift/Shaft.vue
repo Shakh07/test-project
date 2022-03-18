@@ -3,7 +3,7 @@
     class="border-r-2 border-l-2 border-t border-gray-400 w-32 flex flex-col-reverse"
   >
     <div
-      class="bg-blue-600 h-32 transition-all ease-linear"
+      class="bg-blue-600 h-28 transition-all ease-linear"
       :style="cabinPosition"
       :class="{ 'cabin-stop': isAnimate }"
     >
@@ -48,7 +48,7 @@ export default {
   computed: {
     cabinPosition() {
       return {
-        "margin-bottom": 128 * this.stage - 128 + "px",
+        "margin-bottom": 112 * this.stage - 112 + "px",
         "transition-duration": this.timer + "s",
       };
     },

@@ -1,6 +1,6 @@
 <template>
-  <div class="border h-32">
-    <div class="relative left-48 flex flex-col gap-y-2">
+  <div class="border h-28">
+    <div class="relative flex flex-col gap-y-2 stages" :style="addShaft">
       <p>{{ stage.number }}</p>
       <div
         @click="callStages"
@@ -30,6 +30,17 @@ export default {
     stage: {
       type: Object,
       required: true,
+    },
+    shafts: {
+      type: Array,
+      required: true,
+    },
+  },
+  computed: {
+    addShaft() {
+      return {
+        left: this.shafts.length * 158 + "px",
+      };
     },
   },
   methods: {
