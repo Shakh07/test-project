@@ -81,10 +81,10 @@ export default {
       this.isMoving = true;
       setTimeout(() => {
         this.isMoving = false;
+        this.addToLocalstorage("stage", this.stage);
         this.isAnimate = true;
         //событие прибытия лифта
         this.$emit("arrived", nextStage);
-        this.addToLocalstorage("stage", this.stage);
         //После 3 секунды отдыха
         setTimeout(() => {
           this.isAnimate = false;

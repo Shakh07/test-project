@@ -41,9 +41,11 @@ export default {
     getStage(val) {
       this.callStage = val;
       this.stages.find((el) => el.number === val).isClicked = true;
+      //проверка текущего этажа
       const currentStage = JSON.parse(localStorage.getItem("stage"));
       if (currentStage === this.callStage) {
         this.arrivedLift(val);
+        return;
       }
     },
     arrivedLift(val) {
