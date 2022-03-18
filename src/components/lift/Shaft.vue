@@ -86,6 +86,7 @@ export default {
       setTimeout(() => {
         this.isMoving = false;
         this.isAnimate = true;
+        //событие прибытия лифта
         this.$emit("arrived", nextStage);
         //После 3 секунды отдыха
         setTimeout(() => {

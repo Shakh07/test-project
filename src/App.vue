@@ -34,6 +34,16 @@ export default {
       callStage: 1,
     };
   },
+  mounted() {
+    //Проверка состояния кнопок вызова при обновлении страницы
+    if (JSON.parse(localStorage.getItem("stackStages"))) {
+      const calledStages = JSON.parse(localStorage.getItem("stackStages"));
+      calledStages.forEach((element) => {
+        this.stages.find((el) => el.number === element).isClicked = true;
+      });
+      console.log(calledStages);
+    }
+  },
   methods: {
     getStage(val) {
       this.callStage = val;

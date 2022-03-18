@@ -32,6 +32,9 @@ export default {
       required: true,
     },
   },
+  mounted() {
+    localStorage.setItem("isArrived", JSON.stringify(this.stage.isClicked));
+  },
   methods: {
     callStages() {
       this.$emit("stage", this.stage.number);
