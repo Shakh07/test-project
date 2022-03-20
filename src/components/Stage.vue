@@ -45,7 +45,6 @@ export default {
   },
   methods: {
     callStages() {
-      console.log("emit stage");
       this.$emit("stage", this.stage.number);
     },
   },

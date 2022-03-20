@@ -7,7 +7,6 @@
         class="relative"
         :callStage="shaft.stage"
         @arrived="arrivedLift(shaft.id, ...arguments)"
-        @stackStages="getStackStages"
       />
     </div>
     <div class="mt-2 flex flex-col-reverse">
@@ -48,56 +47,29 @@ export default {
       stackStages: [],
     };
   },
-  mounted() {
-    this.checkLiftCallButtonState();
-  },
   methods: {
     goToStage(val) {
       this.stages.find((el) => el.number === val).isClicked = true;
-      console.log("goToStage", val);
       const freeShaft = this.shafts.find((el) => el.isFree);
-      console.log("freeShaft", freeShaft);
       if (freeShaft === undefined) {
         this.stackStages.push(val);
         return;
       }
+      //Этаж занят
       if (this.shafts.find((el) => el.stage === val)) {
-        console.log("Этаж занят");
+        this.stages.find((el) => el.number === val).isClicked = false;
         return;
       }
       freeShaft.stage = val;
       freeShaft.isFree = false;
-      //проверка текущего этажа
-      // const currentStage = JSON.parse(localStorage.getItem("stage"));
-      // if (currentStage === freeShaft.stage) {
-      //   this.arrivedLift(val);
-      //   return;
-      // }
     },
     arrivedLift(id, stage) {
-      console.log("arrived lift", id, stage);
       this.shafts.find((el) => el.id === id).isFree = true;
       this.stages.find((el) => el.number === stage).isClicked = false;
       if (this.stackStages.length) {
         this.goToStage(this.stackStages.shift());
       }
     },
-    //Проверка состояния кнопок вызова при обновлении страницы
-    checkLiftCallButtonState() {
-      // if (JSON.parse(localStorage.getItem("stackStages"))) {
-      //   const calledStages = JSON.parse(localStorage.getItem("stackStages"));
-      //   calledStages.forEach((element) => {
-      //     this.stages.find((el) => el.number === element).isClicked = true;
-      //   });
-      // }
-    },
-    getStackStages() {
-      // const stackStages = arr;
-      // console.log(stackStages);
-    },
-    // checkFreeLift() {
-    //   return this.shafts.find((el) => el.isFree === true);
-    // },
   },
 };
 </script>
