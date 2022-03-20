@@ -3,7 +3,7 @@
     <div class="relative flex flex-col gap-y-2 stages" :style="addShaft">
       <p>{{ stage.number }}</p>
       <div
-        @click="callStages"
+        @click.prevent="callStages"
         class="wrapper cursor-pointer border border-blue-400 w-7 flex justify-center p-1"
         :class="{ isClicked: stage.isClicked }"
       >
@@ -45,6 +45,7 @@ export default {
   },
   methods: {
     callStages() {
+      console.log("emit stage");
       this.$emit("stage", this.stage.number);
     },
   },

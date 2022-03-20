@@ -71,7 +71,8 @@ export default {
         return;
       }
       //Добавление вызовов и этажа в LocalStorage
-      this.addToLocalstorage("stackStages", this.stackStages);
+      // this.addToLocalstorage("stackStages", this.stackStages);
+      this.$emit("stackStages", this.stackStages);
       //удаление из очереди
       const nextStage = this.stackStages.shift();
       //таймер движения этажа
@@ -81,7 +82,7 @@ export default {
       this.isMoving = true;
       setTimeout(() => {
         this.isMoving = false;
-        this.addToLocalstorage("stage", this.stage);
+        // this.addToLocalstorage("stage", this.stage);
         this.isAnimate = true;
         //событие прибытия лифта
         this.$emit("arrived", nextStage);
