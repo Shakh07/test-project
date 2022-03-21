@@ -29,6 +29,7 @@ export default {
   components: { Stage, Shaft },
   data() {
     return {
+      //кол-во этажей
       stages: [
         { id: 1, number: 1, isClicked: false },
         { id: 2, number: 2, isClicked: false },
@@ -38,6 +39,7 @@ export default {
         { id: 6, number: 6, isClicked: false },
         { id: 7, number: 7, isClicked: false },
       ],
+      //кол-во шахт
       shafts: [
         { id: 1, isFree: true, stage: 1 },
         { id: 2, isFree: true, stage: 1 },
@@ -49,7 +51,9 @@ export default {
   },
   methods: {
     goToStage(val) {
+      //кноака вызова нажата
       this.stages.find((el) => el.number === val).isClicked = true;
+      //поиск свободного лифта
       const freeShaft = this.shafts.find((el) => el.isFree);
       if (freeShaft === undefined) {
         this.stackStages.push(val);
@@ -66,6 +70,7 @@ export default {
     arrivedLift(id, stage) {
       this.shafts.find((el) => el.id === id).isFree = true;
       this.stages.find((el) => el.number === stage).isClicked = false;
+      //проверка очереди вызовов после прибытия лифта
       if (this.stackStages.length) {
         this.goToStage(this.stackStages.shift());
       }
